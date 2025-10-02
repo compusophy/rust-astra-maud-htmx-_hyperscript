@@ -476,7 +476,12 @@ fn main() {
         },
     ]));
 
-    Server::bind("localhost:8888")
+    // Get port from environment variable or default to 8888
+    let port = std::env::var("PORT").unwrap_or_else(|_| "8888".to_string());
+    let addr = format!("0.0.0.0:{}", port);
+    println!("Server starting on {}", addr);
+
+    Server::bind(&addr)
         .serve(move |_req, _info| {
             handle_request(
                 _req,
